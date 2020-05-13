@@ -36,7 +36,7 @@ namespace InfectionSimulation
             for (int i = 0; i < 5000; i++)
             {
                 Person entity = new Person();
-                entity.Infected = i == 0;
+                entity.Infected = i == 0;// esta linea se enecuta 5000 veces al pedo
                 entity.Rotation = world.Random() * Math.PI * 2;
                 entity.Position = world.RandomPoint();
                 world.Add(entity);
@@ -54,7 +54,7 @@ namespace InfectionSimulation
         {
             ClientSize = new Size(world.Width * scale, world.Height * scale);
             long begin = Environment.TickCount;
-            world.Update();
+            world.Actualizar();
             Refresh();
             long end = Environment.TickCount;
             RegisterFrameTime(end - begin);

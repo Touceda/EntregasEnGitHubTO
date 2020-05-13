@@ -14,7 +14,7 @@ namespace InfectionSimulation
         private const int width = 300;
         private const int height = 300;
         private Size size = new Size(width, height);
-        private List<GameObject> objects = new List<GameObject>();
+        private List<GameObject> objects = new List<GameObject>();//tIENE A LAS PERSONAS
 
         public IEnumerable<GameObject> GameObjects {
             get
@@ -59,13 +59,39 @@ namespace InfectionSimulation
             objects.Remove(obj);
         }
 
-        public void Update()
+        List<Point> PosicionesDeInfectados;// Aca voy a Guardar la pos de mis infectados
+        public void Actualizar()
         {
-            foreach (GameObject obj in GameObjects)
+            PosicionesDeInfectados = new List<Point>();//intancio la lista
+            foreach (Person persona in objects)//Recorro 1 vez a todas las personas
             {
-                obj.InternalUpdateOn(this);
-                obj.Position = Mod(obj.Position, size);
+                if (persona.Infected == true) //y si estan infectadas
+                {
+                    PosicionesDeInfectados.Add(persona.Position);//Guardo sus posiciones
+                }
             }
+
+            foreach (Person persona in objects)//Recorro nuevamente las personas
+            {
+                for (int i = 0; i < PosicionesDeInfectados.Count; i++)//accedo a todos los infectados
+                {
+                    if (persona.Position == PosicionesDeInfectados[i]) //comparo la position de todas las personas en comparacion de las infectadas
+                    {
+                        persona.Infected = true;//si una persona toca a una infectada == true (se infecta)
+                        //si una persona ya infectada se toca a si misma, no afecta
+                    }
+                }
+
+                persona.InternalUpdateOn(this);
+                persona.Position = Mod(persona.Position, size);
+            }
+
+            //foreach (GameObject obj in GameObjects) //Recorre objeto por objeto 
+            //{
+ 
+            //    obj.InternalUpdateOn(this);// hace que el objeto se actualize (infectado o no)
+            //    obj.Position = Mod(obj.Position, size);//cambia la posicion del objeto
+            //}
         }
 
         public void DrawOn(Graphics graphics)
@@ -101,10 +127,11 @@ namespace InfectionSimulation
             return new Point(Mod(p.X, s.Width), Mod(p.Y, s.Height));
         }
 
-        public IEnumerable<GameObject> ObjectsAt(Point pos)
-        {
-            return GameObjects.Where(each => each.Position.Equals(pos));
-        }
+        //public IEnumerable<GameObject> ObjectsAt(Point pos)
+        //{
+        //    return GameObjects.Where(each => each.Position.Equals(pos));
+        //    //idea buscar a mis infectados y recorrer a los infectados y ver si algun sano lo esta tocando
+        //}
 
     }
 }
