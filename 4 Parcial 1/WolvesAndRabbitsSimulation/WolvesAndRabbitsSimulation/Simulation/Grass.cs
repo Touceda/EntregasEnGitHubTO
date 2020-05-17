@@ -10,12 +10,12 @@ namespace WolvesAndRabbitsSimulation.Simulation
 {
     class Grass : GameObject
     {
-        public const int PATCH_SIZE = 2;
+        public const int PATCH_SIZE = 2;//tamaño del pasto
 
         private int growth;
         private int ticks = 0;
         
-        public int Growth
+        public int Growth//actualiza la vida del apsto y el color
         {
             get { return growth; }
             set
@@ -23,16 +23,16 @@ namespace WolvesAndRabbitsSimulation.Simulation
                 growth = value;
                 if (growth > 255) { growth = 255; }
                 else if (growth < 0) { growth = 0; }
-                Color = Color.FromArgb(growth, 0, 255, 0);
+                Color = Color.FromArgb(growth, 0, 255, 0);//degradado de color = growth
             }
         }
 
-        public override Rectangle Bounds
+        public override Rectangle Bounds//tamaño del pasto
         {
             get { return new Rectangle(Position, new Size(PATCH_SIZE, PATCH_SIZE)); }
         }
 
-        public override void UpdateOn(World world)
+        public override void UpdateOn(World world)//se actualiza el tiempo y el pasto aumenta 10
         {
             if (++ticks > 10)
             {

@@ -51,14 +51,16 @@ namespace WolvesAndRabbitsSimulation
 
         private void InitializeWorld()
         {
-            FillWithGrass();
-            SpawnSomeRabbits();
+            FillWithGrass();//instancio la grass
+            SpawnSomeRabbits();//instancio los conejos
         }
 
         private void Form1_Paint(object sender, PaintEventArgs e)
         {
+            //e.Graphics.Clear(Color.Brown);
             e.Graphics.ScaleTransform(scale, scale);
             world.DrawOn(e.Graphics);
+            
         }
                 
         private void updateTimer_Tick(object sender, EventArgs e)
@@ -69,9 +71,10 @@ namespace WolvesAndRabbitsSimulation
         private void Step()
         {
             ClientSize = new Size(world.Width * scale, world.Height * scale);
-            long begin = stopwatch.ElapsedMilliseconds;
+            long begin = stopwatch.ElapsedMilliseconds;       
             world.Update();
             Refresh();
+
             long end = stopwatch.ElapsedMilliseconds;
             RegisterFrameTime(end - begin);
 
@@ -98,7 +101,7 @@ namespace WolvesAndRabbitsSimulation
             }
         }
 
-        private void FillWithGrass()
+        private void FillWithGrass()//creo la grass
         {
             for (int x = 0; x < world.Width; x += Grass.PATCH_SIZE)
             {
@@ -112,7 +115,7 @@ namespace WolvesAndRabbitsSimulation
             }
         }
 
-        private void SpawnSomeRabbits()
+        private void SpawnSomeRabbits()//genera 50 rabits
         {
             for (int i = 0; i < 50; i++)
             {
@@ -128,6 +131,7 @@ namespace WolvesAndRabbitsSimulation
                     rabbit.Position = new Point(rabbit.Position.X, 0);
                 }
                 world.Add(rabbit);
+
             }
         }
 

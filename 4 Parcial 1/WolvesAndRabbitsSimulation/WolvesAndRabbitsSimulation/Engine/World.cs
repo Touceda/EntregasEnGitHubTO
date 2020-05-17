@@ -13,7 +13,7 @@ namespace WolvesAndRabbitsSimulation.Engine
 
         private const int width = 255;
         private const int height = 255;
-        private Size size = new Size(width, height);
+        private Size size = new Size(width, height);//Tamaño del mundo
         private GameObject[] objects = new GameObject[0];
 
         public IEnumerable<GameObject> GameObjects
@@ -27,41 +27,41 @@ namespace WolvesAndRabbitsSimulation.Engine
         public int Width { get { return width; } }
         public int Height { get { return height; } }
 
-        public float Random()
+        public float Random()//devuelve un numero entre 0,0 y 1,1
         {
             return (float)rnd.NextDouble();
         }
 
-        public Point RandomPoint()
+        public Point RandomPoint()//genera un Point Random dentro del mundo
         {
             return new Point(rnd.Next(width), rnd.Next(height));
         }
 
-        public int Random(int min, int max)
+        public int Random(int min, int max)//genera un random con un numero max y min
         {
             return rnd.Next(min, max);
         }
 
-        public void Add(GameObject obj)
+        public void Add(GameObject obj)//guarda un objeto concatenando los arrays
         {
             objects = objects.Concat(new GameObject[] { obj }).ToArray();
         }
 
-        public void Remove(GameObject obj)
+        public void Remove(GameObject obj)//elimina un objeto
         {
             objects = objects.Where(o => o != obj).ToArray();
         }
 
-        public virtual void Update()
+        public virtual void Update()//actualiza los objetos
         {
             foreach (GameObject obj in GameObjects)
             {
                 obj.UpdateOn(this);
-                obj.Position = PositiveMod(obj.Position, size);
+                //obj.Position = PositiveMod(obj.Position, size);//solo aplica en los conejos
             }
         }
 
-        public virtual void DrawOn(Graphics graphics)
+        public virtual void DrawOn(Graphics graphics)//dibuja los objetos
         {
             foreach (GameObject obj in GameObjects)
             {
@@ -77,15 +77,12 @@ namespace WolvesAndRabbitsSimulation.Engine
                 result += n;
             return result;
         }
-        private static Point PositiveMod(Point p, Size s)
+        private static Point PositiveMod(Point p, Size s)//los objetos no salen de pantalla
         {
             return new Point(PositiveMod(p.X, s.Width), PositiveMod(p.Y, s.Height));
         }
 
-        public double Dist(PointF a, PointF b)
-        {
-            return Math.Sqrt(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2));
-        }
+       
 
         public IEnumerable<GameObject> ObjectsAt(Point pos)
         {
@@ -98,5 +95,11 @@ namespace WolvesAndRabbitsSimulation.Engine
                     && Dist(pos, center) <= bounds.Height / 2.0f;
             });
         }
+
+        public double Dist(PointF a, PointF b)
+        {
+            return Math.Sqrt(Math.Pow(a.X - b.X, 2) + Math.Pow(a.Y - b.Y, 2));
+        }
     }
+
 }
